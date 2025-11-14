@@ -1,3 +1,7 @@
+# Cloud-Native Project
+
+This repository defines a cloud-native solution with **Terraform**, **ArgoCD**, and **Helm** for deploying frontend and backend applications on **Azure Kubernetes Service (AKS)**. It supports **dev, staging, and prod environments**.
+
 ===================================FOLDER STRUCTURE================
 
 ```Solution Structure
