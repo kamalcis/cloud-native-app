@@ -6,7 +6,7 @@ cloud-native-project/
 ├── apps/                    # Application Helm charts and source code
 ├── argocd/                  # ArgoCD GitOps manifests
 ├── pipelines/               # Azure DevOps CI/CD pipelines
-└── README.md
+└── README.md                # Main read me file of the solution
 
 
 infrastructure/
