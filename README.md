@@ -52,21 +52,35 @@ apps/
 
 
 argocd/
-├── base/
-│   ├── frontend-application.yaml     # ArgoCD Application CRDS for frontend
-│   └── backend-application.yaml      # ArgoCD Application CRDS for backend
+├── dev/
+│   ├── frontend-application.yaml  # value files values-dev.yaml will be used
+│   └── backend-application.yaml   # value files  values-dev.yaml will be used
 │
-└── overlays/
-    ├── dev/
-    │   ├── frontend-application.yaml  # value files values-dev.yaml will be used
-    │   └── backend-application.yaml   # value files  values-dev.yaml will be used
-    │
-    ├── staging/
-    │   ├── frontend-application.yaml   # value files values-stagging.yaml used
-    │   └── backend-application.yaml
-    │
-    └── prod/
-        ├── frontend-application.yaml    # value files values-prod.yaml used
-        └── backend-application.yaml
+├── staging/
+│   ├── frontend-application.yaml   # value files values-stagging.yaml used
+│   └── backend-application.yaml
+│
+└── prod/
+    ├── frontend-application.yaml    # value files values-prod.yaml used
+    └── backend-application.yaml
+
+pipelines/
+└── azure-pipeline.yaml   # Single pipeline to apply all Terraform modules (main.ts)
+
+
+
+
+===================================  HOW THE PROCESS WORKS=========================
+
+1. In azure pipeline /infrustructure/main.tf will be applied
+2. main.tf will call the modules
+           - network (vnet,subnet,nodepool,nsg)
+           - aks (aks cluster)
+           - argocd (Api Server, Repo Server, UI Interface, Application Controller)
+           - database
+3. /infrustructure/modules/argo/main.tf will install the application CRDS from
+           -  /argocd/dev/backend-application.yaml using kubernetes_menifest provider
+
+4. Now the argocd application is pointed to apps e.g. frontend and backend. So the frontend and backend helm chart will be deployed, updated, monitored through argocd now. (no pipeline needed)
 
 ```
