@@ -1,7 +1,7 @@
 ===================================FOLDER STRUCTURE================
 
 ```Solution Structure
-cloud-native-project/
+cloud-native-project/        # Project root directory
 ├── infrastructure/          # Terraform-based infrastructure
 ├── apps/                    # Application Helm charts and source code
 ├── argocd/                  # ArgoCD GitOps manifests
@@ -9,7 +9,7 @@ cloud-native-project/
 └── README.md                # Main read me file of the solution
 
 
-infrastructure/
+infrastructure/              # All terraform codes
 ├── main.tf                  # Root Terraform entry point calling modules
 ├── provider.tf              # AzureRM provider configuration
 ├── variables.tf             # Global/shared variables
@@ -26,7 +26,7 @@ infrastructure/
 └── scripts/                 # Helper scripts for Terraform automation
 
 
-apps/
+apps/                            # Kubernetes apps either raw or helm
 ├── helm/                        # All helm charts goes into helm
 │   ├── frontend/                # Helm chart for frontend
 │   │   ├── Chart.yaml           # Chart specification
@@ -51,7 +51,7 @@ apps/
 
 
 
-argocd/
+argocd/                            # Application CRDS with kubernetes manifests
 ├── dev/
 │   ├── frontend-application.yaml  # value files values-dev.yaml will be used
 │   └── backend-application.yaml   # value files  values-dev.yaml will be used
