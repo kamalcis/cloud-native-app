@@ -31,6 +31,9 @@ apps/
 │   ├── frontend/                # Helm chart for frontend
 │   │   ├── Chart.yaml           # Chart specification
 │   │   ├── values.yaml          # Default Configuration values
+|   |   ├── values-dev.yaml      # Default Configuration values for dev env
+|   |   ├── values-staging.yaml  # Default Configuration values for stagging env
+|   |   ├── values-prod.yaml     # Default Configuration values for prod env
 │   │   └── templates/           # Kubernetes manifests inside chart
 │   │       ├── deployment.yaml
 │   │       ├── service.yaml
@@ -55,15 +58,15 @@ argocd/
 │
 └── overlays/
     ├── dev/
-    │   ├── frontend-application.yaml
-    │   └── backend-application.yaml
+    │   ├── frontend-application.yaml  # value files values-dev.yaml will be used
+    │   └── backend-application.yaml   # value files  values-dev.yaml will be used
     │
     ├── staging/
-    │   ├── frontend-application.yaml
+    │   ├── frontend-application.yaml   # value files values-stagging.yaml used
     │   └── backend-application.yaml
     │
     └── prod/
-        ├── frontend-application.yaml
+        ├── frontend-application.yaml    # value files values-prod.yaml used
         └── backend-application.yaml
 
 ```
