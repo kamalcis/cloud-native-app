@@ -16,8 +16,8 @@ src/
 terraform/
 ├── envs/                 # Environment-specific configurations
 ├── modules/              # Reusable infrastructure modules
-│   ├── network/          # VNet, Subnets, NSGs
-│   ├── aks/              # AKS cluster configuration
+│   ├── network/          # VNet, Subnets, Nodepool, NSGs
+│   ├── aks/              # AKS cluster configuration on nodepool
 |   ├── security/         # Key Vault, Managed Identity
 │   ├── argo/             # ArgoCD setup and configuration
 │   └── database/         # Azure SQL Database
@@ -38,16 +38,23 @@ helm/
 │   ├── charts/                       # Subcharts / Dependencies
 │   ├── Chart.yaml                    # Chart metadata and dependencies
 │   └── values.yaml
-|   └── values-dev.yaml               # Environment specif vlues overriden in argocd application manifests
-|   └── values-prod.yaml
-|   └── values-staging.yaml
-└── frontend/                         # Frontend application deployable chart
-    ├── templates/                    # Kubernetes manifests
-    │   ├── frontend-deployment.yaml
-    │   └── frontend-service.yaml
-    ├── charts/
-    ├── Chart.yaml                    # Chart metadata and dependencies
-    └── values.yaml                   # Default configuration values / manifests file refer this
+│   └── values-dev.yaml               # Environment specific values overriden in argocd
+│   └── values-prod.yaml
+│   └── values-staging.yaml
+│
+├── frontend/                         # Frontend application deployable chart
+│   ├── templates/                    # Kubernetes manifests
+│   │   ├── frontend-deployment.yaml
+│   │   └── frontend-service.yaml
+│   ├── charts/
+│   ├── Chart.yaml                    # Chart metadata and dependencies
+│   └── values.yaml                   # Default configuration values
+│
+└── observability/                    # Observability Helm charts
+    ├── prometheus/                   # Prometheus Helm chart
+    ├── grafana/                      # Grafana Helm chart
+    └── efk/                          # Elasticsearch + Fluent Bit + Kibana
+
 
 
 argocd/
@@ -58,8 +65,11 @@ argocd/
 └── prod/                 # Production environment
 
 
-pipelines/
-└── azure-pipeline.yaml   # Single pipeline to apply all Terraform modules (main.ts)
+pipelines/                              # trivy image scan
+└── azure-security-scan-pipeline.yaml   # terraform fmt,terraform validate,tflint,checkov,helm lint,kube-score,
+└── azure-ci-pipeline.yaml              # checkout, build, test, create docker image, push docker image.
+└── azure-deployment-pipeline.yaml      # Create infrastructure by apply infrastructure/terraform/main.tf
+                                          Rest of the modules called by the main.tf
 
 
 
@@ -76,6 +86,22 @@ pipelines/
            -  /argocd/dev/backend-application.yaml using kubernetes_menifest provider
 
 4. Now the argocd application is pointed to apps e.g. frontend and backend. So the frontend and backend helm chart will be deployed, updated, monitored through argocd now. (no pipeline needed)
+
+======================================== HOW PIPELINE EXECUTE====================
+
+Commit / PR
+│
+▼
+[Security-Scan-Pipeline]
+│
+▼ (if pass)
+[Azure-CI-Pipeline]
+│
+▼ (if pass)
+[Azure-Deployment-Pipeline]
+│
+▼
+ArgoCD Sync → Apps + Observability Deployed
 
 
 
