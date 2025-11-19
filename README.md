@@ -44,7 +44,7 @@ helm/
 └── frontend/                         # Frontend application deployable chart
     ├── templates/                    # Kubernetes manifests
     │   ├── frontend-deployment.yaml
-    │   └── frontend$-service.yaml
+    │   └── frontend-service.yaml
     ├── charts/
     ├── Chart.yaml                    # Chart metadata and dependencies
     └── values.yaml                   # Default configuration values / manifests file refer this
@@ -77,4 +77,10 @@ pipelines/
 
 4. Now the argocd application is pointed to apps e.g. frontend and backend. So the frontend and backend helm chart will be deployed, updated, monitored through argocd now. (no pipeline needed)
 
+
+
 ```
+
+# ToDo List:
+
+Secruity Scanning
