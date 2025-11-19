@@ -21,6 +21,8 @@ terraform/
 |   ├── security/         # Key Vault, Managed Identity, Image Verification (Signed Image at CI pipeline), Velero Backup
 │   ├── argo/             # ArgoCD setup and configuration
 │   └── database/         # Azure managed SQL Database, backup and recovery through primary and secondary replica
+│   └── cost/             # Azure native cost alerts based on thresehold
+│
 ├── main.tf               # Main infrastructure configuration
 ├── variables.tf          # Input variables
 ├── outputs.tf            # Output values
@@ -36,9 +38,13 @@ helm/
 │   │   ├── hpa.yaml                  # Horizontal Pod Autoscaler for automatic scaling
 │   │   ├── service-account.yaml      # For Managed Identity
 │   │   ├── rbac.yaml                 # Role-Based Access Control for pod permissions
-│   │   ├── network-policy.yaml       # Pod security
+│   │   ├── network-policy.yaml       # Pod to pod traffic control
+│   │   └── default-deny-network-policy.yaml
 │   │   ├── limit-range.yaml          # Resource limits namespace-wide
+|   |   ├── secret-providerclass.yaml # Retrieve secret from keyvault and inject into deployment
 │   │   └── pdb.yaml                  # Pod Disruption Budget for graceful node maintenance
+│   │
+│   │
 │   ├── charts/                       # Subcharts / Dependencies
 │   ├── Chart.yaml                    # Chart metadata and dependencies
 │   └── values.yaml
@@ -58,9 +64,18 @@ helm/
 │   └── values.yaml                   # Default configuration values
 │
 ├── observability/                    # Observability Helm charts
-│   ├── prometheus/                   # Prometheus Helm chart
+│   ├── prometheus/                   # Prometheus Helm chart to monitor metrics, cost metrics
 │   ├── grafana/                      # Grafana Helm chart
 │   └── efk/                          # Elasticsearch + Fluent Bit + Kibana
+|   └── falco/                        # Implement falco runtime security
+|
+├── common-config/
+│   ├── templates/                    # Kubernetes manifests
+│   │   ├── namespaces.yaml           # Namespace with pod securit standard (PSS)
+│   ├── charts/
+│   ├── Chart.yaml                    # Chart metadata and dependencies
+│   └── values.yaml                   # Default configuration values
+|
 │
 └── istio/                            # Istio Service Mesh
     ├── templates/
