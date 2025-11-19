@@ -18,7 +18,7 @@ terraform/
 │   ├── aks/              # AKS cluster configuration on nodepool
 |   ├── security/         # Key Vault, Managed Identity, Image Verification (Signed Image at CI pipeline), Velero Backup
 │   ├── argo/             # ArgoCD setup and configuration
-│   └── database/         # Azure managed SQL Database, Cross Origin Disaster Recovery, Failover Group
+│   └── database/         # Azure managed SQL Database, Cross Origin Disaster Recovery, Failover Group (Managed Db Level, Cloud World)
 │   └── cost/             # Azure native cost alerts based on thresehold
 │
 ├── main.tf               # Main infrastructure configuration
@@ -88,7 +88,7 @@ helm/
 │   │   │   │   └── falco-config.yaml
 │   │   │   ├── Chart.yaml
 │   │   │   └── values.yaml
-│   │   └── velero/                   # Backup & Disaster Recovery
+│   │   └── velero/                   # Backup & Disaster Recovery at Infrastructure Level e.g. StorageVolume, K8s World
 │   │       ├── templates/
 │   │       │   ├── velero.yaml
 │   │       │   ├── backup-storage-location.yaml
@@ -148,8 +148,8 @@ argocd/
 └── prod/                         # Production environment
 
 
-pipelines/                              # trivy image scan
-└── azure-security-scan-pipeline.yaml   # terraform fmt,terraform validate,tflint,checkov,helm lint,kube-score,
+pipelines/                              
+└── azure-security-scan-pipeline.yaml   # terraform fmt,terraform validate,tflint,checkov,helm lint,kube-score,trivy image scan
 └── azure-ci-pipeline.yaml              # checkout, build, test, create docker image, push docker image, image sign
 └── azure-deployment-pipeline.yaml      # Create infrastructure by apply infrastructure/terraform/main.tf
                                           Rest of the modules called by the main.tf
