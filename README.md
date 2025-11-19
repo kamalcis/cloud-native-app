@@ -18,9 +18,9 @@ terraform/
 ├── modules/              # Reusable infrastructure modules
 │   ├── network/          # VNet, Subnets, Nodepool, NSGs
 │   ├── aks/              # AKS cluster configuration on nodepool
-|   ├── security/         # Key Vault, Managed Identity
+|   ├── security/         # Key Vault, Managed Identity, Image Verification (Signed Image at CI pipeline)
 │   ├── argo/             # ArgoCD setup and configuration
-│   └── database/         # Azure SQL Database
+│   └── database/         # Azure managed SQL Database, backup and recovery through primary and secondary replica
 ├── main.tf               # Main infrastructure configuration
 ├── variables.tf          # Input variables
 ├── outputs.tf            # Output values
@@ -67,7 +67,7 @@ argocd/
 
 pipelines/                              # trivy image scan
 └── azure-security-scan-pipeline.yaml   # terraform fmt,terraform validate,tflint,checkov,helm lint,kube-score,
-└── azure-ci-pipeline.yaml              # checkout, build, test, create docker image, push docker image.
+└── azure-ci-pipeline.yaml              # checkout, build, test, create docker image, push docker image, image sign
 └── azure-deployment-pipeline.yaml      # Create infrastructure by apply infrastructure/terraform/main.tf
                                           Rest of the modules called by the main.tf
 
