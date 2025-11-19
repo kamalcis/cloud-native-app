@@ -74,19 +74,6 @@ pipelines/                              # trivy image scan
 
 
 
-===================================  HOW THE PROCESS WORKS=========================
-
-1. In azure pipeline /infrastructure/terraform/main.tf will be applied
-2. main.tf will call the modules
-           - network (vnet,subnet,nodepool,nsg)
-           - aks (aks cluster)
-           - argocd (Api Server, Repo Server, UI Interface, Application Controller)
-           - database
-3. /infrustructure/modules/argo/main.tf will install the application CRDS from
-           -  /argocd/dev/backend-application.yaml using kubernetes_menifest provider
-
-4. Now the argocd application is pointed to apps e.g. frontend and backend. So the frontend and backend helm chart will be deployed, updated, monitored through argocd now. (no pipeline needed)
-
 ======================================== HOW PIPELINE EXECUTE====================
 
 Commit / PR
@@ -102,5 +89,20 @@ Commit / PR
 │
 ▼
 ArgoCD Sync → Apps + Observability Deployed
+
+
+===================================  HOW THE PROCESS WORKS=========================
+
+1. In azure-deployment-pipeline /infrastructure/terraform/main.tf will be applied first
+   main.tf will call the following modules
+           - network (vnet,subnet,nodepool,nsg)
+           - aks (aks cluster)
+           - argocd (Api Server, Repo Server, UI Interface, Application Controller)
+           - database
+           - security
+3. /infrustructure/modules/argo/main.tf will install the application CRDS from
+           -  /argocd/dev/backend-application.yaml using kubernetes_menifest provider
+
+4. Now the argocd application is pointed to apps e.g. frontend and backend. So the frontend and backend helm chart will be deployed, updated, monitored through argocd now. (no pipeline needed)
 
 ```
