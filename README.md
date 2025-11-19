@@ -1,72 +1,60 @@
 # Cloud-Native Project
 
-This repository defines a cloud-native solution with **Terraform**, **ArgoCD**, and **Helm** for deploying frontend and backend applications on **Azure Kubernetes Service (AKS)**. It supports **dev, staging, and prod environments**.
-
 ===================================FOLDER STRUCTURE================
 
 ```Solution Structure
-cloud-native-project/        # Project root directory
-├── infrastructure/          # Terraform-based infrastructure
-├── apps/                    # Application Helm charts and source code
-├── argocd/                  # ArgoCD GitOps manifests
-├── pipelines/               # Azure DevOps CI/CD pipelines
-└── README.md                # Main read me file of the solution
+cloud-native-app/
+├── src/ # Application source code (backend, frontend)
+├── infrastructure/ # Terraform, Helm, ArgoCD (GitOps) configs
+├── pipeline/ # CI/CD pipeline definitions
+└── README.md # Project documentation
 
+src/
+├── backend/ # Spring Boot backend applications
+└── frontend/ # Angular frontend applications
 
-infrastructure/              # All terraform codes
-├── main.tf                  # Root Terraform entry point calling modules
-├── provider.tf              # AzureRM provider configuration
-├── variables.tf             # Global/shared variables
-├── outputs.tf               # Aggregate outputs from modules
-├── modules/                 # Reusable Terraform modules
-│   ├── network/             # VNET, subnets, NSGs
-│   ├── aks/                 # AKS cluster + node pools
-│   └── database/            # Azure SQL Database (optional)
-|   └── argo/                # Argocd API, UI,
-├── envs/                    # Environment-specific variable files
-│   ├── dev/terraform.tfvars
-│   ├── staging/terraform.tfvars
-│   └── prod/terraform.tfvars
-└── scripts/                 # Helper scripts for Terraform automation
-
-
-apps/                            # Kubernetes apps either raw or helm
-├── helm/                        # All helm charts goes into helm
-│   ├── frontend/                # Helm chart for frontend
-│   │   ├── Chart.yaml           # Chart specification
-│   │   ├── values.yaml          # Default Configuration values
-|   |   ├── values-dev.yaml      # Default Configuration values for dev env
-|   |   ├── values-staging.yaml  # Default Configuration values for stagging env
-|   |   ├── values-prod.yaml     # Default Configuration values for prod env
-│   │   └── templates/           # Kubernetes manifests inside chart
-│   │       ├── deployment.yaml
-│   │       ├── service.yaml
-│   │       └── ingress.yaml
-│   │
-│   └── backend/                 # Helm chart for backend
-│       ├── Chart.yaml           # Helm Chart specification for backend
-│       ├── values.yaml          # Default configuration values
-│       └── templates/           # Kubernetes manifests goes into templates
-│           ├── deployment.yaml
-│           ├── service.yaml
-│           └── ingress.yaml
-│
-└── manifests/                   # Raw Kubernetes manifests (non-Helm)
+terraform/
+├── envs/                 # Environment-specific configurations
+├── modules/              # Reusable infrastructure modules
+│   ├── network/          # VNet, Subnets, NSGs
+│   ├── aks/              # AKS cluster configuration
+|   ├── security/         # Key Vault, Managed Identity
+│   ├── argo/             # ArgoCD setup and configuration
+│   └── database/         # Azure SQL Database
+├── main.tf               # Main infrastructure configuration
+├── variables.tf          # Input variables
+├── outputs.tf            # Output values
+└── provider.tf           # Provider configurations
 
 
 
-argocd/                            # Application CRDS with kubernetes manifests
-├── dev/
-│   ├── frontend-application.yaml  # value files values-dev.yaml will be used
-│   └── backend-application.yaml   # value files  values-dev.yaml will be used
-│
-├── staging/
-│   ├── frontend-application.yaml   # value files values-stagging.yaml used
-│   └── backend-application.yaml
-│
-└── prod/
-    ├── frontend-application.yaml    # value files values-prod.yaml used
-    └── backend-application.yaml
+helm/
+├── backend/                          # Deployable helm chart / application
+│   ├── templates/                    # Kubernetes manifests files
+│   │   ├── backend-deployment.yaml
+│   │   └── backend-service.yaml
+│   ├── charts/                       # Subcharts / Dependencies
+│   ├── Chart.yaml                    # Chart metadata and dependencies
+│   └── values.yaml
+|   └── values-dev.yaml               # Environment specif vlues overriden in argocd application manifests
+|   └── values-prod.yaml
+|   └── values-staging.yaml
+└── frontend/                         # Frontend application deployable chart
+    ├── templates/                    # Kubernetes manifests
+    │   ├── frontend-deployment.yaml
+    │   └── frontend$-service.yaml
+    ├── charts/
+    ├── Chart.yaml                    # Chart metadata and dependencies
+    └── values.yaml                   # Default configuration values / manifests file refer this
+
+
+argocd/
+├── dev/                   # Development environment application CRDs
+│   ├── backend-application.yaml
+│   └── frontend-application.yaml
+├── staging/              # Staging environment
+└── prod/                 # Production environment
+
 
 pipelines/
 └── azure-pipeline.yaml   # Single pipeline to apply all Terraform modules (main.ts)
@@ -76,7 +64,7 @@ pipelines/
 
 ===================================  HOW THE PROCESS WORKS=========================
 
-1. In azure pipeline /infrustructure/main.tf will be applied
+1. In azure pipeline /infrustructure/terraform/main.tf will be applied
 2. main.tf will call the modules
            - network (vnet,subnet,nodepool,nsg)
            - aks (aks cluster)
