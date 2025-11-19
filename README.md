@@ -74,7 +74,7 @@ pipelines/                              # trivy image scan
 
 
 
-======================================== HOW PIPELINE EXECUTE====================
+======================================== ORDER OF PIPELINE EXECUTION ====================
 
 Commit / PR
 │
