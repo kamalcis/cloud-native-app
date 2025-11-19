@@ -141,8 +141,8 @@ helm/
 
 argocd/
 ├── dev/                          # Development environment
-│   ├── backend-application.yaml
-│   ├── frontend-application.yaml
+│   ├── backend-application.yaml  # Override the values.yaml with the env specific values
+│   ├── frontend-application.yaml 
 │   └── platform-applications.yaml
 ├── staging/                      # Staging environment
 └── prod/                         # Production environment
