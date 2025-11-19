@@ -16,9 +16,9 @@ src/
 terraform/
 ├── envs/                 # Environment-specific configurations
 ├── modules/              # Reusable infrastructure modules
-│   ├── network/          # VNet, Subnets, Nodepool, NSGs
+│   ├── network/          # VNet, Subnets, Nodepool, NSGs, Azure Firewall, DDos
 │   ├── aks/              # AKS cluster configuration on nodepool
-|   ├── security/         # Key Vault, Managed Identity, Image Verification (Signed Image at CI pipeline)
+|   ├── security/         # Key Vault, Managed Identity, Image Verification (Signed Image at CI pipeline), Velero Backup
 │   ├── argo/             # ArgoCD setup and configuration
 │   └── database/         # Azure managed SQL Database, backup and recovery through primary and secondary replica
 ├── main.tf               # Main infrastructure configuration
