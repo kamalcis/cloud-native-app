@@ -103,10 +103,4 @@ Commit / PR
 ▼
 ArgoCD Sync → Apps + Observability Deployed
 
-
-
 ```
-
-# ToDo List:
-
-Secruity Scanning
