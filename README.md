@@ -29,74 +29,123 @@ terraform/
 
 
 helm/
-├── backend/                          # Deployable helm chart / application
-│   ├── templates/                    # Kubernetes manifests files
-│   │   ├── deployment.yaml           # App deployment
-│   │   ├── service.yaml              # Service that expose the deployment
-│   │   ├── hpa.yaml                  # Horizontal Pod Autoscaler for automatic scaling
-│   │   ├── service-account.yaml      # For Managed Identity
-│   │   ├── rbac.yaml                 # Role-Based Access Control for pod permissions
-│   │   ├── network-policy.yaml       # Pod to pod traffic control
-│   │   └── default-deny-network-policy.yaml
-│   │   ├── limit-range.yaml          # Resource limits namespace-wide
-|   |   ├── secret-providerclass.yaml # Retrieve secret from keyvault and inject into deployment
-│   │   └── pdb.yaml                  # Pod Disruption Budget for graceful node maintenance
+├── platform/                         # Platform services (managed by platform team)
+│   ├── istio/                        # Service Mesh & Ingress Implementation
+│   │   ├── templates/
+│   │   │   ├── namespace.yaml
+│   │   │   ├── istio-base.yaml
+│   │   │   ├── istiod.yaml
+│   │   │   ├── ingress-gateway.yaml   # Implements Gateway API
+│   │   │   ├── egress-gateway.yaml
+│   │   │   ├── mesh-config.yaml
+│   │   │   └── peer-authentication.yaml
+│   │   ├── Chart.yaml
+│   │   └── values.yaml
 │   │
+│   ├── observability/                # Monitoring & Logging Stack
+│   │   ├── prometheus/               # Metrics Collection
+│   │   │   ├── templates/
+│   │   │   │   ├── prometheus-server.yaml
+│   │   │   │   ├── prometheus-config.yaml
+│   │   │   │   └── service-monitors.yaml
+│   │   │   ├── Chart.yaml
+│   │   │   └── values.yaml
+│   │   ├── grafana/                  # Visualization
+│   │   │   ├── templates/
+│   │   │   │   ├── grafana-deployment.yaml
+│   │   │   │   ├── grafana-dashboards.yaml
+│   │   │   │   └── grafana-datasources.yaml
+│   │   │   ├── Chart.yaml
+│   │   │   └── values.yaml
+│   │   └── efk/                      # Logging Pipeline
+│   │       ├── templates/
+│   │       │   ├── elasticsearch.yaml
+│   │       │   ├── fluent-bit.yaml
+│   │       │   └── kibana.yaml
+│   │       ├── Chart.yaml
+│   │       └── values.yaml
 │   │
-│   ├── charts/                       # Subcharts / Dependencies
-│   ├── Chart.yaml                    # Chart metadata and dependencies
-│   └── values.yaml
-│   └── values-dev.yaml               # Environment specific values overriden in argocd
-│   └── values-prod.yaml
-│   └── values-staging.yaml
+│   ├── security/                     # Security Platform
+│   │   ├── cert-manager/             # Certificate Management
+│   │   │   ├── templates/
+│   │   │   │   ├── cert-manager.yaml
+│   │   │   │   ├── cluster-issuer.yaml
+│   │   │   │   ├── letsencrypt-prod.yaml
+│   │   │   │   └── letsencrypt-staging.yaml
+│   │   │   ├── Chart.yaml
+│   │   │   └── values.yaml
+│   │   ├── gatekeeper/               # Policy Enforcement
+│   │   │   ├── templates/
+│   │   │   │   ├── gatekeeper.yaml
+│   │   │   │   ├── constraint-templates/
+│   │   │   │   └── constraints/
+│   │   │   ├── Chart.yaml
+│   │   │   └── values.yaml
+│   │   ├── falco/                    # Runtime Security (Corrected Location)
+│   │   │   ├── templates/
+│   │   │   │   ├── falco-daemonset.yaml
+│   │   │   │   ├── falco-rules.yaml
+│   │   │   │   └── falco-config.yaml
+│   │   │   ├── Chart.yaml
+│   │   │   └── values.yaml
+│   │   └── velero/                   # Backup & Disaster Recovery
+│   │       ├── templates/
+│   │       │   ├── velero.yaml
+│   │       │   ├── backup-storage-location.yaml
+│   │       │   └── volume-snapshot-location.yaml
+│   │       ├── Chart.yaml
+│   │       └── values.yaml
 │
-├── frontend/                         # Frontend application deployable chart
-│   ├── templates/                    # Kubernetes manifests
-│   │   ├── frontend-deployment.yaml
-│   │   ├── frontend-service.yaml
-│   │   ├── frontend-hpa.yaml         # Frontend autoscaling
-│   │   ├── frontend-rbac.yaml        # Frontend RBAC permissions
-│   │   └── frontend-limit-range.yaml # Frontend resource limits
-│   ├── charts/
-│   ├── Chart.yaml                    # Chart metadata and dependencies
-│   └── values.yaml                   # Default configuration values
+├── apps/                             # Business Applications (managed by app teams)
+│   ├── backend/                      # Spring Boot Microservices
+│   │   ├── templates/
+│   │   │   ├── deployment.yaml
+│   │   │   ├── service.yaml
+│   │   │   ├── hpa.yaml
+│   │   │   ├── service-account.yaml
+│   │   │   ├── rbac.yaml
+│   │   │   ├── network-policy.yaml
+│   │   │   ├── default-deny-network-policy.yaml
+│   │   │   ├── limit-range.yaml
+│   │   │   ├── secret-providerclass.yaml
+│   │   │   ├── pdb.yaml
+│   │   │   └── httproute.yaml        # App-specific routing
+│   │   ├── charts/
+│   │   ├── Chart.yaml
+│   │   └── values.yaml
+│   │   └── values-dev.yaml
+│   │   └── values-prod.yaml
+│   │   └── values-staging.yaml
+│   │
+│   └── frontend/                     # Angular Application
+│       ├── templates/
+│       │   ├── frontend-deployment.yaml
+│       │   ├── frontend-service.yaml
+│       │   ├── frontend-hpa.yaml
+│       │   ├── frontend-rbac.yaml
+│       │   ├── frontend-limit-range.yaml
+│       │   └── frontend-httproute.yaml
+│       ├── charts/
+│       ├── Chart.yaml
+│       └── values.yaml
 │
-├── observability/                    # Observability Helm charts
-│   ├── prometheus/                   # Prometheus Helm chart to monitor metrics, cost metrics
-│   ├── grafana/                      # Grafana Helm chart
-│   └── efk/                          # Elasticsearch + Fluent Bit + Kibana
-|   └── falco/                        # Implement falco runtime security
-|
-├── common-config/
-│   ├── templates/                    # Kubernetes manifests
-│   │   ├── namespaces.yaml           # Namespace with pod security standard (PSS)
-│   │   └── gateway.yaml              # GatewayClass, Gateway, HttpRute, TLS, Canary Deployment by weight
-
-│   ├── charts/
-│   ├── Chart.yaml                    # Chart metadata and dependencies
-│   └── values.yaml                   # Default configuration values
-|
-│
-└── istio/                            # Istio Service Mesh
+└── common-config/                    # Cluster-wide configurations
     ├── templates/
-    │   ├── namespace.yaml
-    │   ├── istio-base.yaml
-    │   ├── istiod.yaml
-    │   ├── ingress-gateway.yaml
-    │   ├── egress-gateway.yaml
-    │   ├── mesh-config.yaml
-    │   └── peer-authentication.yaml
+    │   ├── namespaces.yaml           # Namespaces with PSS labels
+    │   ├── gateway.yaml              # GatewayClass & Gateway CRDs
+    │   ├── resource-quotas.yaml
+    │   └── priority-classes.yaml
     ├── Chart.yaml
     └── values.yaml
 
 
-
 argocd/
-├── dev/                   # Development environment application CRDs
+├── dev/                          # Development environment
 │   ├── backend-application.yaml
-│   └── frontend-application.yaml
-├── staging/              # Staging environment
-└── prod/                 # Production environment
+│   ├── frontend-application.yaml
+│   └── platform-applications.yaml
+├── staging/                      # Staging environment
+└── prod/                         # Production environment
 
 
 pipelines/                              # trivy image scan
@@ -141,7 +190,7 @@ ArgoCD Sync → Apps + Observability Deployed
 
 ```
 
-# ToDo List
+# ToDo List ( Identified to be Implemented)
 
 OPA/Gatekeeper Policies // Apply policy before deploying resources to cluster
 Container Vulnerability Scanning in Pipeline // X-RAY of docker image , find security holes
