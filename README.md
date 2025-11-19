@@ -1,6 +1,4 @@
-# Cloud-Native Project
-
-===================================FOLDER STRUCTURE================
+# Cloud-Native Project Solution Structure and features to implement
 
 ```Solution Structure
 cloud-native-app/
@@ -20,7 +18,7 @@ terraform/
 │   ├── aks/              # AKS cluster configuration on nodepool
 |   ├── security/         # Key Vault, Managed Identity, Image Verification (Signed Image at CI pipeline), Velero Backup
 │   ├── argo/             # ArgoCD setup and configuration
-│   └── database/         # Azure managed SQL Database, backup and recovery through primary and secondary replica
+│   └── database/         # Azure managed SQL Database, Cross Origin Disaster Recovery, Failover Group
 │   └── cost/             # Azure native cost alerts based on thresehold
 │
 ├── main.tf               # Main infrastructure configuration
@@ -71,7 +69,9 @@ helm/
 |
 ├── common-config/
 │   ├── templates/                    # Kubernetes manifests
-│   │   ├── namespaces.yaml           # Namespace with pod securit standard (PSS)
+│   │   ├── namespaces.yaml           # Namespace with pod security standard (PSS)
+│   │   └── gateway.yaml              # GatewayClass, Gateway, HttpRute, TLS, Canary Deployment by weight
+
 │   ├── charts/
 │   ├── Chart.yaml                    # Chart metadata and dependencies
 │   └── values.yaml                   # Default configuration values
@@ -140,3 +140,11 @@ ArgoCD Sync → Apps + Observability Deployed
 4. Now the argocd application is pointed to apps e.g. frontend and backend. So the frontend and backend helm chart will be deployed, updated, monitored through argocd now. (no pipeline needed)
 
 ```
+
+# ToDo List
+
+OPA/Gatekeeper Policies // Apply policy before deploying resources to cluster
+Container Vulnerability Scanning in Pipeline // X-RAY of docker image , find security holes
+Database Connection Pooling // Faster connection , reuse connection rather recreate it, after serving back to pool
+mTLS in Istio // Ensure the identity of every service
+Automated Rollbacks // IF any error found in new deployment automatically rollback
