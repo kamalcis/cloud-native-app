@@ -33,8 +33,12 @@ helm/
 │   ├── templates/                    # Kubernetes manifests files
 │   │   ├── deployment.yaml           # App deployment
 │   │   ├── service.yaml              # Service that expose the deployment
+│   │   ├── hpa.yaml                  # Horizontal Pod Autoscaler for automatic scaling
+│   │   ├── service-account.yaml      # For Managed Identity
+│   │   ├── rbac.yaml                 # Role-Based Access Control for pod permissions
 │   │   ├── network-policy.yaml       # Pod security
-│   │   └── service-account.yaml      # For Managed Identity
+│   │   ├── limit-range.yaml          # Resource limits namespace-wide
+│   │   └── pdb.yaml                  # Pod Disruption Budget for graceful node maintenance
 │   ├── charts/                       # Subcharts / Dependencies
 │   ├── Chart.yaml                    # Chart metadata and dependencies
 │   └── values.yaml
@@ -45,15 +49,30 @@ helm/
 ├── frontend/                         # Frontend application deployable chart
 │   ├── templates/                    # Kubernetes manifests
 │   │   ├── frontend-deployment.yaml
-│   │   └── frontend-service.yaml
+│   │   ├── frontend-service.yaml
+│   │   ├── frontend-hpa.yaml         # Frontend autoscaling
+│   │   ├── frontend-rbac.yaml        # Frontend RBAC permissions
+│   │   └── frontend-limit-range.yaml # Frontend resource limits
 │   ├── charts/
 │   ├── Chart.yaml                    # Chart metadata and dependencies
 │   └── values.yaml                   # Default configuration values
 │
-└── observability/                    # Observability Helm charts
-    ├── prometheus/                   # Prometheus Helm chart
-    ├── grafana/                      # Grafana Helm chart
-    └── efk/                          # Elasticsearch + Fluent Bit + Kibana
+├── observability/                    # Observability Helm charts
+│   ├── prometheus/                   # Prometheus Helm chart
+│   ├── grafana/                      # Grafana Helm chart
+│   └── efk/                          # Elasticsearch + Fluent Bit + Kibana
+│
+└── istio/                            # Istio Service Mesh
+    ├── templates/
+    │   ├── namespace.yaml
+    │   ├── istio-base.yaml
+    │   ├── istiod.yaml
+    │   ├── ingress-gateway.yaml
+    │   ├── egress-gateway.yaml
+    │   ├── mesh-config.yaml
+    │   └── peer-authentication.yaml
+    ├── Chart.yaml
+    └── values.yaml
 
 
 
