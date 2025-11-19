@@ -31,8 +31,10 @@ terraform/
 helm/
 ├── backend/                          # Deployable helm chart / application
 │   ├── templates/                    # Kubernetes manifests files
-│   │   ├── backend-deployment.yaml
-│   │   └── backend-service.yaml
+│   │   ├── deployment.yaml           # App deployment
+│   │   ├── service.yaml              # Service that expose the deployment
+│   │   ├── network-policy.yaml       # Pod security
+│   │   └── service-account.yaml      # For Managed Identity
 │   ├── charts/                       # Subcharts / Dependencies
 │   ├── Chart.yaml                    # Chart metadata and dependencies
 │   └── values.yaml
@@ -64,7 +66,7 @@ pipelines/
 
 ===================================  HOW THE PROCESS WORKS=========================
 
-1. In azure pipeline /infrustructure/terraform/main.tf will be applied
+1. In azure pipeline /infrastructure/terraform/main.tf will be applied
 2. main.tf will call the modules
            - network (vnet,subnet,nodepool,nsg)
            - aks (aks cluster)
