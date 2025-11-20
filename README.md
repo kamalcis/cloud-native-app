@@ -1,5 +1,8 @@
-# Cloud-Native Project Solution Structure and features to implement
-
+# Cloud-Native Project Solution Structure 
+        - Modular architecture
+        - Environment support for terraform:  dev, prod, staging
+        - Environment support for helm:  dev, prod, staging
+        
 ```Solution Structure
 cloud-native-app/
 ├── src/ # Application source code (backend, frontend)
@@ -217,7 +220,7 @@ ArgoCD Sync → Apps + Observability Deployed
 
 ```
 
-# ToDo List ( Identified to be Implemented)
+# Critical features must implement
 
 OPA/Gatekeeper Policies // Apply policy before deploying resources to cluster
 Container Vulnerability Scanning in Pipeline // X-RAY of docker image , find security holes
