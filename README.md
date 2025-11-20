@@ -57,6 +57,13 @@ helm/
 │   │   │   │   └── grafana-datasources.yaml
 │   │   │   ├── Chart.yaml
 │   │   │   └── values.yaml
+│   │   ├── jaeger/                  # Distributed Tracing
+│   │   │   ├── templates/
+│   │   │   │   ├── jaeger-controller.yaml
+│   │   │   │   ├── service.yaml
+│   │   │   │   └── jaeger-agent.yaml
+│   │   │   ├── Chart.yaml
+│   │   │   └── values.yam
 │   │   └── efk/                      # Logging Pipeline
 │   │       ├── templates/
 │   │       │   ├── elasticsearch.yaml
@@ -95,7 +102,7 @@ helm/
 │   │       │   └── volume-snapshot-location.yaml
 │   │       ├── Chart.yaml
 │   │       └── values.yaml
-│
+│   │
 ├── apps/                             # Business Applications (managed by app teams)
 │   ├── backend/                      # Spring Boot Microservices
 │   │   ├── templates/
