@@ -130,7 +130,7 @@ helm/
 ├── apps/                             # Business Applications (managed by app teams)
 │   ├── backend/                      # Spring Boot Microservices
 │   │   ├── templates/
-│   │   │   ├── deployment.yaml
+│   │   │   ├── deployment.yaml       # inject secret as env variable. ( as SecretProviderClass is there )
 │   │   │   ├── service.yaml
 │   │   │   ├── hpa.yaml
 │   │   │   ├── service-account.yaml
@@ -163,7 +163,7 @@ helm/
 └── common-config/                    # Cluster-wide configurations
     ├── templates/
     │   ├── namespaces.yaml           # Namespaces with Pod Security Standard (PSS) labels
-    │   ├── gateway.yaml              # GatewayClass & Gateway CRDs
+    │   ├── gateway.yaml              # GatewayCRDS, Istio Controller, GatewayClass, Gateway API, HttpRoute 
     │   ├── resource-quotas.yaml
     │   └── priority-classes.yaml
     ├── Chart.yaml
