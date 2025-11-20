@@ -105,7 +105,7 @@ helm/
 │   │   │   │   └── letsencrypt-staging.yaml
 │   │   │   ├── Chart.yaml
 │   │   │   └── values.yaml
-│   │   ├── gatekeeper/               # Policy Enforcement
+│   │   ├── kyverno/                   # Policy Enforcement k8s native or Gatekeeper
 │   │   │   ├── templates/
 │   │   │   │   ├── gatekeeper.yaml
 │   │   │   │   ├── constraint-templates/
@@ -223,7 +223,7 @@ ArgoCD Sync → Apps + Observability Deployed
 
 # Critical features must implement
 
-OPA/Gatekeeper Policies // Apply policy before deploying resources to cluster
+OPA/Gatekeeper Policies // Apply policy before deploying resources to cluster ( Kyverno can be used)
 Container Vulnerability Scanning in Pipeline // X-RAY of docker image , find security holes
 Database Connection Pooling // Faster connection , reuse connection rather recreate it, after serving back to pool
 mTLS in Istio // Ensure the identity of every service
