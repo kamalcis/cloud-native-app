@@ -11,7 +11,8 @@
 # Observability
 1. Prometheus
 2. Grafana
-3. ELK
+3. Jaeger
+4. ELK
 
 
 
