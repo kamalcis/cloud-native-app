@@ -5,14 +5,15 @@
         
 ```Solution Structure
 cloud-native-app/
-├── src/ # Application source code (backend, frontend)
-├── infrastructure/ # Terraform, Helm, ArgoCD (GitOps) configs
-├── pipeline/ # CI/CD pipeline definitions
-└── README.md # Project documentation
+├── src/                 # Application source code (backend, frontend)
+├── infrastructure/      # Terraform, Helm, ArgoCD (GitOps) configs
+├── pipeline/            # CI/CD pipeline definitions
+├── docs/                # Solution documentation, architecture, dr runbook
+└── README.md            # Project documentation
 
 src/
-├── backend/ # Spring Boot backend applications
-└── frontend/ # Angular frontend applications
+├── backend/             # Spring Boot backend applications
+└── frontend/            # Angular frontend applications
 
 terraform/
 ├── modules/              # Reusable, environment-agnostic components
