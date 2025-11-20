@@ -12,20 +12,40 @@ src/
 └── frontend/ # Angular frontend applications
 
 terraform/
-├── envs/                 # Environment-specific configurations
-├── modules/              # Reusable infrastructure modules
-│   ├── network/          # VNet, Subnets, Nodepool, NSGs, Azure Firewall, DDos
-│   ├── aks/              # AKS cluster configuration on nodepool
-|   ├── security/         # Key Vault, Managed Identity, Image Verification (Signed Image at CI pipeline), Velero Backup
-│   ├── argo/             # ArgoCD setup and configuration
-│   └── database/         # Azure managed SQL Database, Cross Origin Disaster Recovery, Failover Group (Managed Db Level, Cloud World)
-│   └── cost/             # Azure native cost alerts based on thresehold
+├── modules/              # Reusable, environment-agnostic components
+│   ├── network/          # VNet, Subnets, NSGs, Firewall, DDoS
+│   ├── aks/              # AKS cluster, node pools
+│   ├── security/         # Key Vault, Managed Identity, Velero
+│   ├── argo/             # ArgoCD installation
+│   ├── database/         # SQL Database, Failover Groups
+│   └── cost/             # Cost alerts and budgets
 │
-├── main.tf               # Main infrastructure configuration
-├── variables.tf          # Input variables
-├── outputs.tf            # Output values
-└── provider.tf           # Provider configurations
-
+├── environments/         # Each environment CALLS modules
+│   ├── dev/              # Development environment
+│   │   ├── main.tf       # Calls modules with dev values
+│   │   ├── variables.tf  # Dev-specific variables
+│   │   ├── terraform.tfvars  # Dev configuration values
+│   │   ├── outputs.tf    # Dev outputs
+│   │   └── provider.tf   # Dev provider config
+│   ├── staging/          # Staging environment  
+│   │   ├── main.tf       # Calls modules with staging values
+│   │   ├── variables.tf
+│   │   ├── terraform.tfvars
+│   │   ├── outputs.tf
+│   │   └── provider.tf
+│   └── prod/             # Production environment
+│       ├── main.tf       # Calls modules with prod values
+│       ├── variables.tf
+│       ├── terraform.tfvars
+│       ├── outputs.tf
+│       └── provider.tf
+│
+│   # Global teraform Which is run in the pipeline. main.tf > environments/dev/main.tf > modules/network/main.tf
+├── main.tf      
+├── variables.tf
+│── terraform.tfvars
+├── outputs.tf
+└── provider.tf
 
 
 helm/
