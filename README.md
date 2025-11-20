@@ -229,4 +229,5 @@ Database Connection Pooling // Faster connection , reuse connection rather recre
 mTLS in Istio // Ensure the identity of every service
 Automated Rollbacks // IF any error found in new deployment automatically rollback
 Verify image in CI Pipeline and Implement Cosign(Helm Chart), ClusterImagePolicy(k8s) to verify signature is correct.
+Multi Region Cluster implementation
 
