@@ -183,7 +183,7 @@ pipelines/
 └── azure-security-scan-pipeline.yaml   # terraform fmt,terraform validate,tflint,checkov,helm lint,kube-score,trivy image scan
 └── azure-ci-pipeline.yaml              # checkout, build, test, create docker image, push docker image, image sign
 └── azure-deployment-pipeline.yaml      # Create infrastructure by apply infrastructure/terraform/main.tf
-                                          Rest of the modules called by the main.tf
+                                          Rest of the modules called by the main.tf, image ve
 
 
 
@@ -228,3 +228,5 @@ Container Vulnerability Scanning in Pipeline // X-RAY of docker image , find sec
 Database Connection Pooling // Faster connection , reuse connection rather recreate it, after serving back to pool
 mTLS in Istio // Ensure the identity of every service
 Automated Rollbacks // IF any error found in new deployment automatically rollback
+Verify image in CI Pipeline and Implement Cosign(Helm Chart), ClusterImagePolicy(k8s) to verify signature is correct.
+
