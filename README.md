@@ -162,7 +162,7 @@ helm/
 │
 └── common-config/                    # Cluster-wide configurations
     ├── templates/
-    │   ├── namespaces.yaml           # Namespaces with PSS labels
+    │   ├── namespaces.yaml           # Namespaces with Pod Security Standard (PSS) labels
     │   ├── gateway.yaml              # GatewayClass & Gateway CRDs
     │   ├── resource-quotas.yaml
     │   └── priority-classes.yaml
