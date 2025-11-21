@@ -1,8 +1,10 @@
-# Cloud-Native Project Solution Structure 
+# Cloud-Native Project Solution Structure
+
         - Modular architecture
         - Environment support for terraform:  dev, prod, staging
         - Environment support for helm:  dev, prod, staging
-        
+
+
 ```Solution Structure
 cloud-native-app/
 ├── src/                 # Application source code (backend, frontend)
@@ -31,7 +33,7 @@ terraform/
 │   │   ├── terraform.tfvars  # Dev configuration values
 │   │   ├── outputs.tf    # Dev outputs
 │   │   └── provider.tf   # Dev provider config
-│   ├── staging/          # Staging environment  
+│   ├── staging/          # Staging environment
 │   │   ├── main.tf       # Calls modules with staging values
 │   │   ├── variables.tf
 │   │   ├── terraform.tfvars
@@ -45,7 +47,7 @@ terraform/
 │       └── provider.tf
 │
 │   # Global teraform Which is run in the pipeline. main.tf > environments/dev/main.tf > modules/network/main.tf
-├── main.tf      
+├── main.tf
 ├── variables.tf
 │── terraform.tfvars
 ├── outputs.tf
@@ -160,10 +162,10 @@ helm/
 │       ├── Chart.yaml
 │       └── values.yaml
 │
-└── common-config/                    # Cluster-wide configurations
+└── shared/                           # Cluster-wide configurations
     ├── templates/
     │   ├── namespaces.yaml           # Namespaces with Pod Security Standard (PSS) labels
-    │   ├── gateway.yaml              # GatewayCRDS, Istio Controller, GatewayClass, Gateway API, HttpRoute 
+    │   ├── gateway.yaml              # GatewayCRDS, Istio Controller, GatewayClass, Gateway API, HttpRoute
     │   ├── resource-quotas.yaml
     │   └── priority-classes.yaml
     ├── Chart.yaml
@@ -173,13 +175,13 @@ helm/
 argocd/
 ├── dev/                          # Development environment
 │   ├── backend-application.yaml  # Override the values.yaml with the env specific values
-│   ├── frontend-application.yaml 
+│   ├── frontend-application.yaml
 │   └── platform-applications.yaml
 ├── staging/                      # Staging environment
 └── prod/                         # Production environment
 
 
-pipelines/                              
+pipelines/
 └── azure-security-scan-pipeline.yaml   # terraform fmt,terraform validate,tflint,checkov,helm lint,kube-score,trivy image scan
 └── azure-ci-pipeline.yaml              # checkout, build, test, create docker image, push docker image, image sign
 └── azure-deployment-pipeline.yaml      # Create infrastructure by apply infrastructure/terraform/main.tf
@@ -230,4 +232,3 @@ mTLS in Istio // Ensure the identity of every service
 Automated Rollbacks // IF any error found in new deployment automatically rollback
 Verify image in CI Pipeline and Implement Cosign(Helm Chart), ClusterImagePolicy(k8s) to verify signature is correct.
 Multi Region Cluster implementation
-
